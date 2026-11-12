@@ -98,7 +98,8 @@ class MultiheadAttention(nn.Module):
 
 
 
-# 1. 构造输入
+# 1. 构造输入 [batch_size, seq_len, hid_dim]
+# batch_size：每次训练的样本数，seq_len：每个序列的最大长度，hid_dim：每个词向量的维度
 input = torch.rand(32, 20, 256)
 
 attention = MultiheadAttention(256, 8, 0.1)
