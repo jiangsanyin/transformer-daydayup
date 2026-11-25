@@ -79,6 +79,9 @@ class MultiheadAttention(nn.Module):
         # [32, 8, 20, 16] * [32, 8, 16, 20] => [32, 8, 20, 20]，最后除以缩放因子
         attention_score = torch.matmul(Q, K.permute(0, 1, 3, 2)) / self.scale
 
+        # mask 可以是因果掩码，也可以padding掩码，或者两者的组合。mask的形状为[batch_size, 1, seq_len, seq_len]，其中1表示广播维度
+        # 当为因果掩码时，mask中上三角部分为0，下三角部分为1；
+        # 当为padding掩码时，mask中padding位置为0，非padding位置为1 
         if mask is not None:
             # 此处，torch.finfo(torch.float32).min 与 torch.finfo(attention_score.dtype).min 作用相同
             # torch.finfo(attention_score.dtype).min 获取当前张量数据类型的最小值，避免硬编码
